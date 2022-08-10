@@ -1,11 +1,10 @@
 import * as React from 'react';
-import './style.css';
+import { Section } from './components';
 
 export default function App() {
-  return (
-    <div>
-      <h1>Hello StackBlitz!</h1>
-      <p>Start editing to see some magic happen :)</p>
-    </div>
-  );
+  return [
+    <Section key={1}>test</Section>,
+    <Section key={2}>test 2</Section>,
+    <Section key={3}>test 3</Section>,
+  ];
 }
