@@ -5,7 +5,7 @@ const Section = styled.section`
   margin-bottom: 20px;
 
   &:hover {
-    cursor: pointer;
+    cursor: move;
   }
 
   &:last-child {
