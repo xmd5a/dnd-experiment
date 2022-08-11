@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 const Section = styled.section`
+  display: block;
+  width: 200px;
+  height: 50px;
   border: 2px solid #000;
   margin-bottom: 20px;
 
