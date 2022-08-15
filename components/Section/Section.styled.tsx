@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Section = styled.section`
+const Section = styled.div`
   display: block;
   width: 200px;
   height: 50px;

@@ -11,6 +11,21 @@ const Section = ({ children }: React.PropsWithChildren<SectionProps>) => {
   const initialSectionPosition = React.useRef({ position: null, x: 0, y: 0 });
   const [isDragged, setIsDragged] = React.useState(false);
 
+  const calcElPosition = ({
+    pageX: cursorXPosition,
+    pageY: cursorYPosition,
+  }: MouseEvent) => {
+    const deltaX = cursorXPosition - initialMousePosition.current.x;
+    const deltaY = cursorYPosition - initialMousePosition.current.y;
+
+    sectionEl.current.style.left = parseToPx(
+      initialSectionPosition.current.x + deltaX
+    );
+    sectionEl.current.style.top = parseToPx(
+      initialSectionPosition.current.y + deltaY
+    );
+  };
+
   React.useEffect(() => {
     if (isDragged) {
       document.addEventListener('mousemove', onMouseMove);
@@ -28,28 +43,15 @@ const Section = ({ children }: React.PropsWithChildren<SectionProps>) => {
     };
   }, [isDragged]);
 
-  const onMouseMove = ({
-    pageX: cursorXPosition,
-    pageY: cursorYPosition,
-  }: MouseEvent) => {
-    const deltaX = cursorXPosition - initialMousePosition.current.x;
-    const deltaY = cursorYPosition - initialMousePosition.current.y;
-
-    sectionEl.current.style.position = 'fixed';
-    sectionEl.current.style.left = parseToPx(
-      initialSectionPosition.current.x + deltaX
-    );
-    sectionEl.current.style.top = parseToPx(
-      initialSectionPosition.current.y + deltaY
-    );
+  const onMouseMove = (e: MouseEvent) => {
+    calcElPosition(e);
   };
 
-  const onMouseDown = ({
-    pageX: cursorXPosition,
-    pageY: cursorYPosition,
-  }: React.MouseEvent<HTMLElement>) => {
+  const onMouseDown = (e: MouseEvent) => {
     const { x: sectionXPosition, y: sectionYPosition } =
       sectionEl.current.getBoundingClientRect();
+    const { pageX: cursorXPosition, pageY: cursorYPosition } = e;
+
     initialSectionPosition.current = {
       x: sectionXPosition,
       y: sectionYPosition,
@@ -57,25 +59,33 @@ const Section = ({ children }: React.PropsWithChildren<SectionProps>) => {
     };
     initialMousePosition.current.x = cursorXPosition;
     initialMousePosition.current.y = cursorYPosition;
+
+    sectionEl.current.style.position = 'fixed';
+    calcElPosition(e);
+
     setIsDragged(true);
   };
 
   const onMouseUp = () => {
     sectionEl.current.style.position = initialSectionPosition.current.position;
+
     setIsDragged(false);
   };
 
   console.log('rerender');
 
   return (
-    <StyledSection
-      isDragged={isDragged}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      ref={sectionEl}
-    >
-      {children}
-    </StyledSection>
+    <React.Fragment>
+      {isDragged && <StyledSection />}
+      <StyledSection
+        isDragged={isDragged}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        ref={sectionEl}
+      >
+        {children}
+      </StyledSection>
+    </React.Fragment>
   );
 };
 
