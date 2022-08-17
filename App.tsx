@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { Section } from './components';
+import { Draggable, DraggableProvider } from './components';
+
+const data = [
+  { id: 1, label: 'test 1' },
+  { id: 2, label: 'test 2' },
+  { id: 3, label: 'test 3' },
+];
 
 export default function App() {
   return (
     <main>
-      <Section key={1}>test 1</Section>
-      <Section key={2}>test 2</Section>
-      <Section key={3}>test 3</Section>
+      <DraggableProvider>
+        {data.map(({ id, label }) => (
+          <Draggable key={id}>{label}</Draggable>
+        ))}
+      </DraggableProvider>
     </main>
   );
 }

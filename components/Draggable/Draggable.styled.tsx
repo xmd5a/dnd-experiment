@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Section = styled.div`
+const Draggable = styled.div`
   display: block;
   width: 200px;
   height: 50px;
@@ -16,4 +16,4 @@ const Section = styled.div`
   }
 `;
 
-export { Section };
+export { Draggable };
